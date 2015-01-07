@@ -3,7 +3,7 @@ __author__ = 'ashleyng'
 import cv2
 import numpy as np
 
-FILE_NAME = "abadi1"
+FILE_NAME = "roman1"
 
 
 def main():
@@ -61,8 +61,8 @@ def main():
     # save files
     key_responses = np.array(key_responses, np.float32)
     key_responses = key_responses.reshape((key_responses.size, 1))
-    np.savetxt('data' + FILE_NAME + 'samples.data', samples)
-    np.savetxt('data' + FILE_NAME + 'responses.data', key_responses)
+    np.savetxt('data/' + FILE_NAME + '_samples.data', samples)
+    np.savetxt('data/' + FILE_NAME + '_responses.data', key_responses)
 
 
 if __name__ == "__main__":
