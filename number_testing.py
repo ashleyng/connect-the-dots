@@ -3,8 +3,8 @@ __author__ = 'ashleyng'
 import cv2
 import numpy as np
 
-SAMPLE_FILE_NAME = 'roman1'
-TEST_FILE_NAME = 'roman_simple_test'
+SAMPLE_FILE_NAME = 'cambria_simple1'
+TEST_FILE_NAME = 'cambria_simple_test'
 
 
 def main():
@@ -35,32 +35,34 @@ def main():
         area = cv2.contourArea(contour)
         if area < 1000 and area > 150:
             x, y, w, h = cv2.boundingRect(contour)
-            if h > 35:
-                cv2.rectangle(img=test_image,
-                              pt1=(x, y),
-                              pt2=(x+w, y+h),
-                              color=(0, 255, 0),
-                              thickness=2)
+            cv2.rectangle(img=test_image,
+                          pt1=(x, y),
+                          pt2=(x+w, y+h),
+                          color=(0, 255, 0),
+                          thickness=2)
 
-                individual_num = thresh_image[y:y+h, x:x+w]
-                individual_num_small = cv2.resize(individual_num, (10, 10))
-                individual_num_small = individual_num_small.reshape((1, 100))
-                individual_num_small = np.float32(individual_num_small)
-                # find closest match number
-                retval, results, neighbor_response, dists = model.find_nearest(individual_num_small, k=3)
-                string = str(int((results[0][0])) - 48)
-                print int(string)
-                cv2.imshow("Test_img", test_image)
-                cv2.imshow("img", individual_num)
-                cv2.imshow("output", output)
-                cv2.waitKey(0)
-                if int(string) != 57:
-                    cv2.putText(img=output,
-                                text=string,
-                                org=(x, y+h),
-                                fontFace=0,
-                                fontScale=1,
-                                color=(0, 255, 0))
+            individual_num = thresh_image[y:y+h, x:x+w]
+            individual_num_small = cv2.resize(individual_num, (10, 10))
+            individual_num_small = individual_num_small.reshape((1, 100))
+            individual_num_small = np.float32(individual_num_small)
+            # find closest match number
+            retval, results, neighbor_response, dists = model.find_nearest(individual_num_small, k=3)
+            string = str(int((results[0][0])) - 48)
+            # print int(string)
+            # cv2.imshow("Test_img", test_image)
+            # cv2.imshow("img", individual_num)
+            # cv2.imshow("output", output)
+            # cv2.waitKey(0)
+            if int(string) < 57:
+                if int(string) == 52:
+                    string = 'D'
+
+                cv2.putText(img=output,
+                            text=string,
+                            org=(x, y+h),
+                            fontFace=0,
+                            fontScale=1,
+                            color=(0, 255, 0))
     cv2.imwrite('images/test_images/' + TEST_FILE_NAME + '_results.png', output)
     cv2.destroyAllWindows()
 

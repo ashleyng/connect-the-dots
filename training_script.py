@@ -3,8 +3,7 @@ __author__ = 'ashleyng'
 import cv2
 import numpy as np
 
-FILE_NAME = "abadi1"
-SIMPLE = True
+FILE_NAME = "cambria_simple1"
 
 
 def main():
@@ -28,7 +27,7 @@ def main():
     # d for dot
     keys.append(100)
     # i for ignore
-    keys.append(8)
+    keys.append(105)
 
     # draw contours
     for contour in contours:
