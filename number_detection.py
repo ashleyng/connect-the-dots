@@ -3,9 +3,11 @@ __author__ = 'ashleyng'
 import cv2
 import numpy as np
 
+FILE_NAME = "abadi1"
+
 
 def main():
-    image = cv2.imread("images/abadi_condensed_light.png")
+    image = cv2.imread("images/samples/" + FILE_NAME + ".png")
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     blur = cv2.GaussianBlur(gray_image, (5, 5), 0)
 
@@ -26,8 +28,10 @@ def main():
     # draw contours
     for contour in contours:
         area = cv2.contourArea(contour)
-        # upperbounds: for contour of whole image, can't lower bounds b/c of dots
-        if area < 1000:
+        # upperbounds: for contour of whole image
+        # lowerbounds: get rid of inner circles in 8, 9 etc. except for 0, b/c too big
+        # and will get rid of dot
+        if area < 1000 and area > 150:
             x, y, w, h = cv2.boundingRect(contour)
             cv2.rectangle(img=image,
                           pt1=(x, y),
@@ -37,7 +41,8 @@ def main():
 
             # show number
             individual_number = image[y:y+h, x:x+w]
-            individual_number_small = cv2.resize(individual_number, (10, 10))
+            thresh_individual_image = thresh[y:y+h, x:x+w]
+            individual_number_small = cv2.resize(thresh_individual_image, (10, 10))
             cv2.imshow("number", individual_number)
             key = cv2.waitKey(0)
 
@@ -46,16 +51,18 @@ def main():
                 break
             elif key in keys:
                 key_responses.append(key)
-                # sample = copy.reshape((0, 99))
-                # samples = np.append(samples, sample, 0)
+                # print individual_number_small
+                sample = individual_number_small.reshape((1, 100))
+                samples = np.append(samples, sample, 0)
 
+    cv2.imwrite("images/contours/" + FILE_NAME + ".png", image)
     cv2.destroyAllWindows()
 
     # save files
     key_responses = np.array(key_responses, np.float32)
     key_responses = key_responses.reshape((key_responses.size, 1))
-    np.savetxt('samples.data', samples)
-    np.savetxt('responses.data', key_responses)
+    np.savetxt('data' + FILE_NAME + 'samples.data', samples)
+    np.savetxt('data' + FILE_NAME + 'responses.data', key_responses)
 
 
 if __name__ == "__main__":
