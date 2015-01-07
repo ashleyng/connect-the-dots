@@ -3,7 +3,8 @@ __author__ = 'ashleyng'
 import cv2
 import numpy as np
 
-FILE_NAME = "abadi_simple1"
+FILE_NAME = "abadi1"
+SIMPLE = True
 
 
 def main():
@@ -21,9 +22,13 @@ def main():
 
     samples = np.empty((0, 100))
     key_responses = []
-    # add ascii values of numbers and the letter d (for dot)
+    # add valid keys
+    # numbers
     keys = [i for i in range(48, 58)]
+    # d for dot
     keys.append(100)
+    # i for ignore
+    keys.append(8)
 
     # draw contours
     for contour in contours:
@@ -51,10 +56,11 @@ def main():
                 break
             elif key in keys:
                 key_responses.append(key)
-                # print individual_number_small
                 sample = individual_number_small.reshape((1, 100))
                 samples = np.append(samples, sample, 0)
 
+    # cv2.imshow("test", image)
+    # cv2.waitKey(0)
     cv2.imwrite("images/contours/" + FILE_NAME + ".png", image)
     cv2.destroyAllWindows()
 
