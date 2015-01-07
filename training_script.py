@@ -3,7 +3,7 @@ __author__ = 'ashleyng'
 import cv2
 import numpy as np
 
-FILE_NAME = "roman1"
+FILE_NAME = "abadi_simple1"
 
 
 def main():
