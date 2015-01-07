@@ -3,8 +3,8 @@ __author__ = 'ashleyng'
 import cv2
 import numpy as np
 
-SAMPLE_FILE_NAME = 'cambria_simple1'
-TEST_FILE_NAME = 'cambria_simple_test'
+SAMPLE_FILE_NAME = 'roman'
+TEST_FILE_NAME = 'roman_test'
 
 
 def main():
